@@ -21,7 +21,8 @@ REST API на Django REST Framework для управления резюме. Р
 ```bash
 python -m venv venv
 venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
+cd backend
 python manage.py migrate
 python manage.py runserver
 ```
@@ -192,23 +193,16 @@ http://127.0.0.1:8000/admin/ — пользователи и роли.
 ## Структура проекта
 
 ```
-hr_platform/          настройки Django и корневые URL (в т.ч. swagger/redoc)
-users/                кастомный User, роли, логин, тесты
-  models.py           User + Role; save() синхронизирует role и is_staff
-  serializers.py      username, email, password (write_only)
-  views.py            register (AllowAny) + login (throttle)
-  urls.py             /api/auth/register/, /api/auth/login/
-  tests.py            auth, синхронизация ролей, матрица прав /api/resumes/
-resumes/
-  models.py           Resume (related_name, ordering)
-  serializers.py      ResumeSerializer
-  views.py            ResumeViewSet + select_related
-  permissions.py      права по ролям
-  admin.py            ResumeAdmin
-docker-compose.yml    web, nginx, postgres (корень репозитория)
-nginx/                reverse proxy и статика
-.gitignore            venv/, .env, data/, static/
-requirements.txt
+README.md
+docker-compose.yml
+nginx/
+backend/                  Django-приложение
+  Dockerfile
+  requirements.txt
+  manage.py
+  hr_platform/            настройки и корневые URL (swagger/redoc)
+  users/
+  resumes/
 ```
 
 Доступ к резюме проверяется в трёх местах:
@@ -220,6 +214,7 @@ requirements.txt
 ## Тесты
 
 ```bash
+cd backend
 python manage.py test users -v 2
 ```
 
