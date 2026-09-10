@@ -1,14 +1,15 @@
 # Виртуальное окружение
 venv/
 .venv/
-.env/
 env/
 ENV/
-
-# База данных
+# База данных и данные Docker
 db.sqlite3
 *.sqlite3
-
+data/
+# Сборка Django
+static/
+media/
 # Python
 __pycache__/
 *.py[cod]
@@ -17,14 +18,12 @@ __pycache__/
 .eggs/
 dist/
 build/
-
 # IDE / OS
 .idea/
 .vscode/
 *.swp
 .DS_Store
 Thumbs.db
-
 # Env / secrets
 .env
 .env.*
