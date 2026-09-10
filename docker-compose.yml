@@ -2,9 +2,31 @@ services:
   web:
     build:
       context: ./hr_platform_project
-    ports:
-      - "8000:8000"
     environment:
+      DB_PASS: ${DB_PASS}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DEBUG: ${DEBUG}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+    volumes:
+      - ./hr_platform_project/static:/var/www/static
+
+  postgres:
+    image: postgres:16.9
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
